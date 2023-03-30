@@ -17,8 +17,10 @@ if box[-1] > crain[-1]:
 while box:
     for i in range(N-1, -1, -1):
         for j in range(M-1, -1, -1):
+            if box[0] > crain[i]:
+                break
             if box[j] <= crain[i]:
-                box.remove(box[j])
+                del box[j]
                 M -= 1
                 break
     ans += 1
