@@ -2,6 +2,7 @@ import sys, heapq
 si = sys.stdin.readline
 
 T = int(si().rstrip())
+l = []
 for _ in range(T):
     k = int(si().rstrip())
 
@@ -16,4 +17,5 @@ for _ in range(T):
         res += heapq.heappop(novel)
         ans += res
         heapq.heappush(novel, res)
-    print(ans)
+    l.append(ans)
+print(*l, sep="\n", end="")
