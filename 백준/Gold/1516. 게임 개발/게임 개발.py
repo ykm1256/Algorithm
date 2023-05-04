@@ -1,37 +1,38 @@
-import sys
-from collections import deque
-
+import sys, heapq
 si = sys.stdin.readline
 
-n = int(si().rstrip())
-times = [0] * n
-indegree = [0] * n
-graph = [[] for _ in range(n)]
+N = int(si().rstrip())
+times = [0 for _ in range(N)]
+degree = [0 for _ in range(N)]
+graph = [[] for _ in range(N)]
+answer = [0 for _ in range(N)]
 
-for i in range(n):
-    data = list(map(int, si().split()))
-    times[i] = data[0]  # 시간 정보
-    for x in data[1:-1]:
-        indegree[i] += 1
-        graph[x - 1].append(i)
+for i in range(N):
+    tmp = list(map(int, si().split()))
+    times[i] = tmp[0]
+    for j in range(1, len(tmp)):
+        if tmp[j] == -1:
+            break
+        degree[i] += 1
+        graph[tmp[j]-1].append(i)
 
-def topology_sort():
-    q = deque()
-    result = times[:]  # 현재까지 걸린 시간을 저장할 리스트
-    for i in range(n):
-        if indegree[i] == 0:
-            q.append(i)
 
-    while q:
-        now = q.popleft()
-        for next in graph[now]:
-            indegree[next] -= 1
-            result[next] = max(result[next], result[now] + times[next])  # 다음 건물의 완성 시간 갱신
-            if indegree[next] == 0:
-                q.append(next)
+queue = []
+for i in range(N):
+    if degree[i] == 0:
+        heapq.heappush(queue, (times[i], i))
+        answer[i] = times[i]
 
-    return result
 
-answer = topology_sort()
+while queue:
+    t, now = queue.pop(0)
+
+    for next in graph[now]:
+        degree[next] -= 1
+        answer[next] = max(answer[next], t)
+        if degree[next] == 0:
+            heapq.heappush(queue, (answer[next] + times[next], next))
+            answer[next] += times[next]
+
 for ans in answer:
     print(ans)
