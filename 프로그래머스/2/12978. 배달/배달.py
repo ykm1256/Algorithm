@@ -26,9 +26,3 @@ def solution(N, road, K):
             answer += 1
 
     return answer
-
-N = 5
-road = [[1, 2, 1], [2, 3, 3], [5, 2, 2], [1, 4, 2], [5, 3, 1], [5, 4, 2]]
-K = 3
-
-solution(N,road,K)
